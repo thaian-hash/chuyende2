@@ -47,6 +47,11 @@ def create_tables_if_not_exists():
                 k2 NVARCHAR(255),
                 k3 NVARCHAR(255),
                 ks1 NVARCHAR(255),  -- Added ks1 column
+                ks2 NVARCHAR(255),
+                ks3 NVARCHAR(255),
+                ks4 NVARCHAR(255),  
+                ks5 NVARCHAR(255),
+                ks6 NVARCHAR(255),
                 created_at DATETIME DEFAULT GETDATE()
             )
         """)
@@ -93,9 +98,9 @@ def insert_log(data):
 
         # Thêm vào bảng KeyFindingLogs
         cursor.execute("""
-            INSERT INTO KeyFindingLogs (U, f_list, k1, k2, k3, ks1, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (data['u_set'], data['f_list'], data['k1'], data['k2'], data['k3'], data['ks1'], current_time))
+            INSERT INTO KeyFindingLogs (U, f_list, k1, k2, k3, ks1, ks2, ks3, ks4, ks5, ks6, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (data['u_set'], data['f_list'], data['k1'], data['k2'], data['k3'], data['ks1'], data['ks2'], data['ks3'],data['ks4'], data['ks5'], data['ks6'], current_time))
 
         # Thêm vào bảng MinimalCoverLogs
         cursor.execute("""
@@ -124,7 +129,7 @@ def get_all_logs():
         cursor.execute("SELECT * FROM RelationalSchemaLogs ORDER BY created_at DESC")
         schema_logs = [dict(zip([column[0] for column in cursor.description], row)) for row in cursor.fetchall()]
 
-        cursor.execute("SELECT ID, U, f_list, k1, k2, k3, ks1, created_at FROM KeyFindingLogs ORDER BY created_at DESC")
+        cursor.execute("SELECT ID, U, f_list, k1, k2, k3, ks1, ks2, ks3, ks4, ks5, ks6, created_at FROM KeyFindingLogs ORDER BY created_at DESC")
         key_logs = [dict(zip([column[0] for column in cursor.description], row)) for row in cursor.fetchall()]
 
         cursor.execute("SELECT * FROM MinimalCoverLogs ORDER BY created_at DESC")
@@ -216,7 +221,7 @@ def get_combined_logs():
                 r.f_list,
                 r.x_input,
                 r.x_plus,
-                k.k1, k.k2, k.k3, k.ks1,
+                k.k1, k.k2, k.k3, k.ks1,k.ks2, k.ks3, k.ks4, k.ks5, k.ks6,
                 m.f1, m.f2, m.f3
             FROM RelationalSchemaLogs r
             LEFT JOIN KeyFindingLogs k ON r.created_at = k.created_at
