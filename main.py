@@ -7,7 +7,7 @@ import logging
 
 from utils import str_to_set, set_to_str
 from x_plus import calculate_xplus
-from key_finder import find_k1, find_k2, find_k3, find_all_keys, find_ks1
+from key_finder import find_k1, find_k2, find_k3, find_all_keys, find_ks1, find_ks2, find_ks3,find_ks4, find_ks5, find_ks6
 from fc_generator import find_f1, find_f2, find_f3
 from db import insert_log, get_all_logs, delete_log, get_combined_logs, get_connection
 
@@ -175,6 +175,31 @@ class KeyFindingApp(tk.Tk):
         self.txtKS1.grid(row=3, column=1, padx=8, pady=6)
         ttk.Button(keys_frame, text="🔍 Tìm KS1", command=self.on_find_ks1).grid(row=3, column=2, padx=8, pady=6)
 
+        ttk.Label(keys_frame, text="KS2 =", font=("Arial", 11, "bold")).grid(row=4, column=0, padx=8, pady=6, sticky="w")
+        self.txtKS2 = ttk.Entry(keys_frame, font=("Arial", 11), width=35, state="readonly")
+        self.txtKS2.grid(row=4, column=1, padx=8, pady=6)
+        ttk.Button(keys_frame, text="🔍 Tìm KS2", command=self.on_find_ks2).grid(row=4, column=2, padx=8, pady=6)
+
+        ttk.Label(keys_frame, text="KS3 =", font=("Arial", 11, "bold")).grid(row=5, column=0, padx=8, pady=6, sticky="w")
+        self.txtKS3 = ttk.Entry(keys_frame, font=("Arial", 11), width=35, state="readonly")
+        self.txtKS3.grid(row=5, column=1, padx=8, pady=6)
+        ttk.Button(keys_frame, text="🔍 Tìm KS3", command=self.on_find_ks3).grid(row=5, column=2, padx=8, pady=6)
+
+        ttk.Label(keys_frame, text="KS4 =", font=("Arial", 11, "bold")).grid(row=6, column=0, padx=8, pady=6, sticky="w")
+        self.txtKS4 = ttk.Entry(keys_frame, font=("Arial", 11), width=35, state="readonly")
+        self.txtKS4.grid(row=6, column=1, padx=8, pady=6)
+        ttk.Button(keys_frame, text="🔍 Tìm KS4", command=self.on_find_ks4).grid(row=6, column=2, padx=8, pady=6)
+
+        ttk.Label(keys_frame, text="KS5 =", font=("Arial", 11, "bold")).grid(row=7, column=0, padx=8, pady=6, sticky="w")
+        self.txtKS5 = ttk.Entry(keys_frame, font=("Arial", 11), width=35, state="readonly")
+        self.txtKS5.grid(row=7, column=1, padx=8, pady=6)
+        ttk.Button(keys_frame, text="🔍 Tìm KS5", command=self.on_find_ks5).grid(row=7, column=2, padx=8, pady=6)
+
+        ttk.Label(keys_frame, text="KS6 =", font=("Arial", 11, "bold")).grid(row=8, column=0, padx=8, pady=6, sticky="w")
+        self.txtKS6 = ttk.Entry(keys_frame, font=("Arial", 11), width=35, state="readonly")
+        self.txtKS6.grid(row=8, column=1, padx=8, pady=6)
+        ttk.Button(keys_frame, text="🔍 Tìm KS6", command=self.on_find_ks6).grid(row=8, column=2, padx=8, pady=6)
+
     def init_tab3(self, parent):
         fc_frame = ttk.LabelFrame(parent, text="📊 Tập phụ thuộc hàm tối thiểu", padding=8)
         fc_frame.pack(fill="both", expand=True, padx=8, pady=8)
@@ -335,6 +360,136 @@ class KeyFindingApp(tk.Tk):
         self.txtKS1.config(state="readonly")
         self.status_var.set("✅ Đã tìm và cập nhật KS1 thành công")
 
+    def on_find_ks2(self):
+        if not self.u_set or not self.f_list:
+            messagebox.showwarning("Thiếu dữ liệu", "Vui lòng nhập tập U và F.")
+            return
+        
+        new_ks2 = find_ks2(self.u_set, self.f_list)
+        if not new_ks2:
+            self.status_var.set("❌ Không tìm thấy KS2")
+            return
+
+        self.txtKS2.config(state="normal")
+        current_ks2 = self.txtKS2.get().strip()
+        
+        if current_ks2:
+            current_keys = set(current_ks2.split(';')) if current_ks2 else set()
+            new_keys = set(new_ks2.split(';'))
+            combined_keys = current_keys.union(new_keys)
+            updated_ks2 = ';'.join(sorted(combined_keys))
+        else:
+            updated_ks2 = new_ks2
+
+        self.txtKS2.delete(0, tk.END)
+        self.txtKS2.insert(0, updated_ks2)
+        self.txtKS2.config(state="readonly")
+        self.status_var.set("✅ Đã tìm và cập nhật KS2 thành công")
+
+    def on_find_ks3(self):
+        if not self.u_set or not self.f_list:
+            messagebox.showwarning("Thiếu dữ liệu", "Vui lòng nhập tập U và F.")
+            return
+        
+        new_ks3 = find_ks3(self.u_set, self.f_list)
+        if not new_ks3:
+            self.status_var.set("❌ Không tìm thấy KS3")
+            return
+
+        self.txtKS3.config(state="normal")
+        current_ks3 = self.txtKS3.get().strip()
+        
+        if current_ks3:
+            current_keys = set(current_ks3.split(';')) if current_ks3 else set()
+            new_keys = set(new_ks3.split(';'))
+            combined_keys = current_keys.union(new_keys)
+            updated_ks3 = ';'.join(sorted(combined_keys))
+        else:
+            updated_ks3 = new_ks3
+
+        self.txtKS3.delete(0, tk.END)
+        self.txtKS3.insert(0, updated_ks3)
+        self.txtKS3.config(state="readonly")
+        self.status_var.set("✅ Đã tìm và cập nhật KS3 thành công")
+
+    def on_find_ks4(self):
+        if not self.u_set or not self.f_list:
+            messagebox.showwarning("Thiếu dữ liệu", "Vui lòng nhập tập U và F.")
+            return
+        
+        new_ks4 = find_ks4(self.u_set, self.f_list)
+        if not new_ks4:
+            self.status_var.set("❌ Không tìm thấy KS4")
+            return
+
+        self.txtKS4.config(state="normal")
+        current_ks4 = self.txtKS4.get().strip()
+        
+        if current_ks4:
+            current_keys = set(current_ks4.split(';')) if current_ks4 else set()
+            new_keys = set(new_ks4.split(';'))
+            combined_keys = current_keys.union(new_keys)
+            updated_ks4 = ';'.join(sorted(combined_keys))
+        else:
+            updated_ks4 = new_ks4
+
+        self.txtKS4.delete(0, tk.END)
+        self.txtKS4.insert(0, updated_ks4)
+        self.txtKS4.config(state="readonly")
+        self.status_var.set("✅ Đã tìm và cập nhật KS4 thành công")
+
+    def on_find_ks5(self):
+        if not self.u_set or not self.f_list:
+            messagebox.showwarning("Thiếu dữ liệu", "Vui lòng nhập tập U và F.")
+            return
+        
+        new_ks5 = find_ks5(self.u_set, self.f_list)
+        if not new_ks5:
+            self.status_var.set("❌ Không tìm thấy KS5")
+            return
+
+        self.txtKS5.config(state="normal")
+        current_ks5 = self.txtKS5.get().strip()
+        
+        if current_ks5:
+            current_keys = set(current_ks5.split(';')) if current_ks5 else set()
+            new_keys = set(new_ks5.split(';'))
+            combined_keys = current_keys.union(new_keys)
+            updated_ks5 = ';'.join(sorted(combined_keys))
+        else:
+            updated_ks5 = new_ks5
+
+        self.txtKS5.delete(0, tk.END)
+        self.txtKS5.insert(0, updated_ks5)
+        self.txtKS5.config(state="readonly")
+        self.status_var.set("✅ Đã tìm và cập nhật KS5 thành công")
+
+    def on_find_ks6(self):
+        if not self.u_set or not self.f_list:
+            messagebox.showwarning("Thiếu dữ liệu", "Vui lòng nhập tập U và F.")
+            return
+        
+        new_ks6 = find_ks6(self.u_set, self.f_list)
+        if not new_ks6:
+            self.status_var.set("❌ Không tìm thấy KS6")
+            return
+
+        self.txtKS6.config(state="normal")
+        current_ks6 = self.txtKS6.get().strip()
+        
+        if current_ks6:
+            current_keys = set(current_ks6.split(';')) if current_ks6 else set()
+            new_keys = set(new_ks6.split(';'))
+            combined_keys = current_keys.union(new_keys)
+            updated_ks6 = ';'.join(sorted(combined_keys))
+        else:
+            updated_ks6 = new_ks6
+
+        self.txtKS6.delete(0, tk.END)
+        self.txtKS6.insert(0, updated_ks6)
+        self.txtKS6.config(state="readonly")
+        self.status_var.set("✅ Đã tìm và cập nhật KS6 thành công")
+
     def on_find_f1(self):
         if not self.u_set or not self.f_list:
             messagebox.showwarning("Thiếu dữ liệu", "Vui lòng nhập tập U và F")
@@ -409,6 +564,11 @@ class KeyFindingApp(tk.Tk):
             'k2': self.txtK2.get().strip() or None,
             'k3': self.txtK3.get().strip() or None,
             'ks1': self.txtKS1.get().strip() or None,
+            'ks2': self.txtKS2.get().strip() or None,
+            'ks3': self.txtKS3.get().strip() or None,
+            'ks4': self.txtKS4.get().strip() or None,
+            'ks5': self.txtKS5.get().strip() or None,
+            'ks6': self.txtKS6.get().strip() or None,
             'f1': self.txtF1.get("1.0", "end").strip() or None,
             'f2': self.txtF2.get("1.0", "end").strip() or None,
             'f3': self.txtF3.get("1.0", "end").strip() or None,
@@ -438,7 +598,7 @@ class KeyFindingApp(tk.Tk):
             history_window.configure(bg="#f5f5f5")
 
             # Include schema_log_id in columns
-            columns = ("created_at", "schema_log_id", "u_set", "f_list", "x_input", "x_plus", "k1", "k2", "k3", "ks1", "f1", "f2", "f3")
+            columns = ("created_at", "schema_log_id", "u_set", "f_list", "x_input", "x_plus", "k1", "k2", "k3", "ks1","ks2", "ks3", "ks4", "ks5", "ks6","f1", "f2", "f3")
             self.tree = ttk.Treeview(history_window, columns=columns, show='headings', selectmode='browse')
 
             column_widths = {
@@ -452,6 +612,11 @@ class KeyFindingApp(tk.Tk):
                 "k2": 90,
                 "k3": 90,
                 "ks1": 140,
+                "ks2": 140,
+                "ks3": 140,
+                "ks4": 140,
+                "ks5": 140,
+                "ks6": 140,
                 "f1": 180,
                 "f2": 180,
                 "f3": 180
@@ -480,6 +645,10 @@ class KeyFindingApp(tk.Tk):
                     log.get('k2', ''),
                     log.get('k3', ''),
                     log.get('ks1', ''),
+                    log.get('ks2', ''),
+                    log.get('ks3', ''),
+                    log.get('ks4', ''),
+                    log.get('ks5', ''),
                     log.get('f1', ''),
                     log.get('f2', ''),
                     log.get('f3', '')
@@ -565,6 +734,16 @@ class KeyFindingApp(tk.Tk):
             ttk.Label(frame, text=f"🔑 K3: {log['k3']}", font=("Arial", 11)).pack(anchor="w", pady=4)
         if log.get('ks1'):
             ttk.Label(frame, text=f"🔑 KS1: {log['ks1']}", font=("Arial", 11)).pack(anchor="w", pady=4)
+        if log.get('ks2'):
+            ttk.Label(frame, text=f"🔑 KS2: {log['ks2']}", font=("Arial", 11)).pack(anchor="w", pady=4)
+        if log.get('ks3'):
+            ttk.Label(frame, text=f"🔑 KS3: {log['ks3']}", font=("Arial", 11)).pack(anchor="w", pady=4)
+        if log.get('ks4'):
+            ttk.Label(frame, text=f"🔑 KS4: {log['ks4']}", font=("Arial", 11)).pack(anchor="w", pady=4)
+        if log.get('ks5'):
+            ttk.Label(frame, text=f"🔑 KS5: {log['ks5']}", font=("Arial", 11)).pack(anchor="w", pady=4)
+        if log.get('ks6'):
+            ttk.Label(frame, text=f"🔑 KS6: {log['ks6']}", font=("Arial", 11)).pack(anchor="w", pady=4)
 
         if log.get('f1'):
             ttk.Label(frame, text="📊 F1:", font=("Arial", 11, "bold")).pack(anchor="w", pady=4)
@@ -624,7 +803,7 @@ class KeyFindingApp(tk.Tk):
                 return
 
             # Include schema_log_id in fieldnames
-            fieldnames = ["created_at", "schema_log_id", "u_set", "f_list", "x_input", "x_plus", "k1", "k2", "k3", "ks1", "f1", "f2", "f3"]
+            fieldnames = ["created_at", "schema_log_id", "u_set", "f_list", "x_input", "x_plus", "k1", "k2", "k3", "ks1", "ks2", "ks3", "ks4", "ks5", "ks6", "f1", "f2", "f3"]
 
             with open(file_path, 'w', newline='', encoding='utf-8-sig') as f:
                 writer = csv.DictWriter(f, fieldnames=fieldnames, quoting=csv.QUOTE_MINIMAL)
@@ -640,6 +819,11 @@ class KeyFindingApp(tk.Tk):
                     "k2": "K2",
                     "k3": "K3",
                     "ks1": "KS1",
+                    "ks2": "KS2",
+                    "ks3": "KS3",
+                    "ks4": "KS4",
+                    "ks5": "KS5",
+                    "ks6": "KS6",
                     "f1": "F1",
                     "f2": "F2",
                     "f3": "F3"
@@ -712,7 +896,27 @@ class KeyFindingApp(tk.Tk):
             self.txtKS1.config(state="normal")
             self.txtKS1.delete(0, tk.END)
             self.txtKS1.config(state="readonly")
+
+            self.txtKS2.config(state="normal")
+            self.txtKS2.delete(0, tk.END)
+            self.txtKS2.config(state="readonly")
         
+            self.txtKS3.config(state="normal")
+            self.txtKS3.delete(0, tk.END)
+            self.txtKS3.config(state="readonly")
+
+            self.txtKS4.config(state="normal")
+            self.txtKS4.delete(0, tk.END)
+            self.txtKS4.config(state="readonly")
+        
+            self.txtKS5.config(state="normal")
+            self.txtKS5.delete(0, tk.END)
+            self.txtKS5.config(state="readonly")
+        
+            self.txtKS6.config(state="normal")
+            self.txtKS6.delete(0, tk.END)
+            self.txtKS6.config(state="readonly")
+
             self.txtF1.delete(1.0, tk.END)
             self.txtF2.delete(1.0, tk.END)
             self.txtF3.delete(1.0, tk.END)
@@ -736,8 +940,14 @@ class KeyFindingApp(tk.Tk):
            - Nhấn "Tìm X+"
        
         4. 🔑 Tìm khóa:
-           - Nhấn "Tìm K1", "Tìm K2", "Tìm K3", "Tìm KS1" để tìm khóa theo từng thuật toán
-           - KS1 trả về tất cả các khóa ứng viên, phân tách bằng dấu chấm phẩy
+           - Nhấn "Tìm K1", "Tìm K2", "Tìm K3", "Tìm KS1", "Tìm KS2", "Tìm KS3", "Tìm KS4", "Tìm KS5", "Tìm KS6" để tìm khóa theo từng thuật toán
+           - KS1 trả về tất cả các khóa ứng viên
+           - KS2 trả về các khóa ứng viên có số thuộc tính tối thiểu và ít phụ thuộc
+           - KS3 ưu tiên các khóa chứa nhiều thuộc tính ở vế trái và cân bằng
+           - KS4 tối ưu hóa độ bao phủ của tập phụ thuộc hàm
+           - KS5 dựa trên phân tích đồ thị phụ thuộc với năng lượng thấp
+           - KS6 kết hợp bao phủ và năng lượng để tối ưu hóa
+           - Các khóa được phân tách bằng dấu chấm phẩy
        
         5. 📊 Tìm tập phụ thuộc hàm tối thiểu:
            - Nhấn "Tìm F1", "Tìm F2", "Tìm F3" để tìm tập phụ thuộc hàm tối thiểu
